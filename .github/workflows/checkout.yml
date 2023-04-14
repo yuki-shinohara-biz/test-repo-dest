@@ -5,6 +5,11 @@ jobs:
   Pull_from_other_Repo:
     runs-on: ubuntu-latest
     steps:
+      - name: (For Test Only!) Set current datetime as env variable
+        env:
+          TZ: 'Asia/Tokyo'
+        run: echo "CURRENT_DATETIME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
       - name: Checkout Source Repository
         uses: actions/checkout@v3
         with:
@@ -27,4 +32,7 @@ jobs:
           cat README.md
 
       - name: Create New Brunch To Destination
-        run: pwd
+        run: |
+          cd ${{ github.workspace }}/dest
+          git switch -c test/actions_${{ env.CURRENT_DATETIME }}
+          git push -u origin test/actions_${{ env.CURRENT_DATETIME }}
