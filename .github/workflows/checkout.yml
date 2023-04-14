@@ -5,14 +5,26 @@ jobs:
   Pull_from_other_Repo:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Source
+      - name: Checkout Source Repository
         uses: actions/checkout@v3
         with:
           repository: yuki-shinohara-biz/test-repo-src
           ref: main
+          path: src
+
+      - name: Checkout Destination Repository
+        uses: actions/checkout@v3
+        with:
+          repository: yuki-shinohara-biz/test-repo-dest
+          ref: main
+          path: dest
 
       - name: Build
-        run: cat README.md
+        run: |
+          cd ${{ github.workspace }}/src
+          cat README.md
+          cd ${{ github.workspace }}/dest
+          cat README.md
 
       - name: Create New Brunch To Destination
         run: pwd
