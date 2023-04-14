@@ -1,7 +1,11 @@
 name: Checkout Test.
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
+env:
+  src_repo: yuki-shinohara-biz/test-repo-src
+  dest_repo: yuki-shinohara-biz/test-repo-dest
 jobs:
+
   Pull_from_other_Repo:
     runs-on: ubuntu-latest
     
@@ -9,6 +13,7 @@ jobs:
       contents: write
 
     steps:
+
       - name: (For Test Only!) Set current datetime as env variable
         env:
           TZ: 'Asia/Tokyo'
@@ -17,14 +22,14 @@ jobs:
       - name: Checkout Source Repository
         uses: actions/checkout@v3
         with:
-          repository: yuki-shinohara-biz/test-repo-src
+          repository: ${{ env.src_repo }}
           ref: main
           path: src
 
       - name: Checkout Destination Repository
         uses: actions/checkout@v3
         with:
-          repository: yuki-shinohara-biz/test-repo-dest
+          repository: ${{ env.dest_repo }}
           ref: main
           path: dest
 
