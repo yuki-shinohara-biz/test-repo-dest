@@ -56,6 +56,12 @@ jobs:
           npm run build
           cp -r ${{ github.workspace }}/src/${{ env.frontend_dir_name }}/dist ${{ github.workspace }}/dest/front
 
+      - name: Build Backend
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: composer:v2.2
+
       - name: Create New Brunch To Destination
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
