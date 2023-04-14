@@ -41,6 +41,7 @@ jobs:
       - name: Build Frontend
         run: |
           cd ${{ github.workspace }}/src/test
+          npm install
           npm run build
           cp -r ${{ github.workspace }}/src/test/dist ${{ github.workspace }}/dest/front
 
