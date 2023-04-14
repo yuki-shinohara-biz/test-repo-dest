@@ -76,7 +76,7 @@ jobs:
           php artisan optimize
           composer dump-autoload
           rm -f bootstrap/cache/config.php
-          cp -r ${{ github.workspace }}/src/${{ env.backend_dir_name }}/dist ${{ github.workspace }}/dest/api
+          cp -r ${{ github.workspace }}/src/${{ env.backend_dir_name }} ${{ github.workspace }}/dest/api
 
       - name: Create New Brunch To Destination
         env:
