@@ -31,11 +31,6 @@ jobs:
           TZ: 'Asia/Tokyo'
         run: echo "CURRENT_DATETIME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
 
-      - name: Setup Node.js ${{ env.node_js_version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.node_js_version }}
-
       - name: Checkout Source Repository
         uses: actions/checkout@v3
         with:
@@ -50,6 +45,11 @@ jobs:
           ref: main
           path: dest
 
+      - name: Setup Node.js ${{ env.node_js_version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node_js_version }}
+
       - name: Build Frontend
         run: |
           cd ${{ github.workspace }}/src/${{ env.frontend_dir_name }}
@@ -57,7 +57,7 @@ jobs:
           npm run build
           cp -r ${{ github.workspace }}/src/${{ env.frontend_dir_name }}/dist ${{ github.workspace }}/dest/front
 
-      - name: Setup Backend
+      - name: Setup PHP 7.4
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
@@ -66,6 +66,8 @@ jobs:
       - name: Build Backend
         run: |
           cd ${{ github.workspace }}/src/${{ env.backend_dir_name }}
+          rm -rf .env*
+          rm -rf .gitignore
           composer install --no-dev
           php artisan cache:clear
           php artisan config:clear
@@ -76,6 +78,7 @@ jobs:
           php artisan optimize
           composer dump-autoload
           rm -f bootstrap/cache/config.php
+          php artisan route:list
           cp -r ${{ github.workspace }}/src/${{ env.backend_dir_name }} ${{ github.workspace }}/dest/api
 
       - name: Create New Brunch To Destination
