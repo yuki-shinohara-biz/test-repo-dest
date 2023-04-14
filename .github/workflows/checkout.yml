@@ -14,6 +14,7 @@ env:
   dest_repo: yuki-shinohara-biz/test-repo-dest
   node_js_version: "14.18.0"
   frontend_dir_name: test
+  backend_dir_name: api
 jobs:
 
   Build_For_Release:
@@ -56,11 +57,26 @@ jobs:
           npm run build
           cp -r ${{ github.workspace }}/src/${{ env.frontend_dir_name }}/dist ${{ github.workspace }}/dest/front
 
-      - name: Build Backend
+      - name: Setup Backend
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
           tools: composer:v2.2
+
+      - name: Build Backend
+        run: |
+          cd ${{ github.workspace }}/src/${{ env.backend_dir_name }}
+          composer install --no-dev
+          php artisan cache:clear
+          php artisan config:clear
+          php artisan config:cache
+          php artisan route:clear
+          php artisan view:clear
+          php artisan clear-compiled
+          php artisan optimize
+          composer dump-autoload
+          rm -f bootstrap/cache/config.php
+          cp -r ${{ github.workspace }}/src/${{ env.backend_dir_name }}/dist ${{ github.workspace }}/dest/api
 
       - name: Create New Brunch To Destination
         env:
