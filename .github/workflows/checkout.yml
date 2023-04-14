@@ -64,4 +64,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd ${{ github.workspace }}/dest
-          gh pr create --fill -B main -r test/actions_${{ env.CURRENT_DATETIME }}
+          gh pr create --fill -B main -t "Pull Request For Release" -b
