@@ -42,6 +42,8 @@ jobs:
           cd ${{ github.workspace }}/dest
           git switch -c test/actions_${{ env.CURRENT_DATETIME }}
           echo "test from github actions" >> ${{ env.CURRENT_DATETIME }}.txt
+          git config user.name  github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add .
           git commit -m "generated"
           git push -u origin test/actions_${{ env.CURRENT_DATETIME }}
