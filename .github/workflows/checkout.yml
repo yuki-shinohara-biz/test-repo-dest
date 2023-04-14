@@ -1,6 +1,14 @@
 name: Build Test
 run-name: Build by ${{ github.actor }}
-on: [push]
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseVerion:
+        description: 'リリースするバージョン名を指定'
+        required: true
+        type: string
+
 env:
   src_repo: yuki-shinohara-biz/test-repo-src
   dest_repo: yuki-shinohara-biz/test-repo-dest
@@ -58,11 +66,11 @@ jobs:
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add .
           git commit -m "Github Actions build"
-          git push -u origin test/actions_${{ env.CURRENT_DATETIME }}
+          git push -u origin release/${{ inputs.releaseVerion }}_${{ env.CURRENT_DATETIME }}
 
       - name: Create Pull Request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd ${{ github.workspace }}/dest
-          gh pr create --fill -B main -t "Pull Request For Release" -b "build test"
+          gh pr create --fill -B main -t "Pull Request For Release "${{ inputs.releaseVerion }} -b "build test"
