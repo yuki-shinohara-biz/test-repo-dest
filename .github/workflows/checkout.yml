@@ -41,7 +41,7 @@ jobs:
       - name: Build Frontend
         run: |
           cd ${{ github.workspace }}/src/test
-          npm ci
+          npm run build
           cp -r ${{ github.workspace }}/src/test/dist ${{ github.workspace }}/dest/front
 
       - name: Create New Brunch To Destination
