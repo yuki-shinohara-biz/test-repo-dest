@@ -1,5 +1,5 @@
-name: Checkout Test.
-run-name: Build stated by ${{ github.actor }}
+name: Build Test
+run-name: Build by ${{ github.actor }}
 on: [push]
 env:
   src_repo: yuki-shinohara-biz/test-repo-src
