@@ -41,4 +41,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}/dest
           git switch -c test/actions_${{ env.CURRENT_DATETIME }}
+          echo "test from github actions" >> ${{ env.CURRENT_DATETIME }}.txt
+          git add .
+          git commit -m "generated"
           git push -u origin test/actions_${{ env.CURRENT_DATETIME }}
