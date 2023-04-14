@@ -32,6 +32,8 @@ jobs:
           cat README.md
 
       - name: Create New Brunch To Destination
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd ${{ github.workspace }}/dest
           git switch -c test/actions_${{ env.CURRENT_DATETIME }}
