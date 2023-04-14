@@ -4,6 +4,7 @@ on: [push]
 env:
   src_repo: yuki-shinohara-biz/test-repo-src
   dest_repo: yuki-shinohara-biz/test-repo-dest
+  node_js_version: "14.18.0"
 jobs:
 
   Pull_from_other_Repo:
@@ -22,7 +23,7 @@ jobs:
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: ${{ env.node_js_version }}
 
       - name: Checkout Source Repository
         uses: actions/checkout@v3
