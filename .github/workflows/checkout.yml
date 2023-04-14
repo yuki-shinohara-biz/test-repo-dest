@@ -1,13 +1,14 @@
 name: Checkout Test.
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+run-name: Build stated by ${{ github.actor }}
 on: [push]
 env:
   src_repo: yuki-shinohara-biz/test-repo-src
   dest_repo: yuki-shinohara-biz/test-repo-dest
   node_js_version: "14.18.0"
+  frontend_dir_name: test
 jobs:
 
-  Pull_from_other_Repo:
+  Build_For_Release:
     runs-on: ubuntu-latest
 
     permissions:
@@ -20,7 +21,7 @@ jobs:
           TZ: 'Asia/Tokyo'
         run: echo "CURRENT_DATETIME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
 
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js ${{ env.node_js_version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.node_js_version }}
@@ -41,10 +42,10 @@ jobs:
 
       - name: Build Frontend
         run: |
-          cd ${{ github.workspace }}/src/test
+          cd ${{ github.workspace }}/src/${{ env.frontend_dir_name }}
           npm install
           npm run build
-          cp -r ${{ github.workspace }}/src/test/dist ${{ github.workspace }}/dest/front
+          cp -r ${{ github.workspace }}/src/${{ env.frontend_dir_name }}/dist ${{ github.workspace }}/dest/front
 
       - name: Create New Brunch To Destination
         env:
