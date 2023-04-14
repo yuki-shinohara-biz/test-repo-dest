@@ -8,7 +8,7 @@ jobs:
 
   Pull_from_other_Repo:
     runs-on: ubuntu-latest
-    
+
     permissions:
       contents: write
 
@@ -18,6 +18,11 @@ jobs:
         env:
           TZ: 'Asia/Tokyo'
         run: echo "CURRENT_DATETIME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
 
       - name: Checkout Source Repository
         uses: actions/checkout@v3
@@ -33,12 +38,11 @@ jobs:
           ref: main
           path: dest
 
-      - name: Build
+      - name: Build Frontend
         run: |
-          cd ${{ github.workspace }}/src
-          cat README.md
-          cd ${{ github.workspace }}/dest
-          cat README.md
+          cd ${{ github.workspace }}/src/test
+          npm run build
+          cp -r ${{ github.workspace }}/src/test/dist ${{ github.workspace }}/dest/front
 
       - name: Create New Brunch To Destination
         env:
@@ -46,9 +50,8 @@ jobs:
         run: |
           cd ${{ github.workspace }}/dest
           git switch -c test/actions_${{ env.CURRENT_DATETIME }}
-          echo "test from github actions" >> ${{ env.CURRENT_DATETIME }}.txt
           git config user.name  github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add .
-          git commit -m "generated"
+          git commit -m "Github Actions build"
           git push -u origin test/actions_${{ env.CURRENT_DATETIME }}
