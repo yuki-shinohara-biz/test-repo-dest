@@ -63,4 +63,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          cd ${{ github.workspace }}/dest
           gh pr create --fill -B main -r test/actions_${{ env.CURRENT_DATETIME }}
