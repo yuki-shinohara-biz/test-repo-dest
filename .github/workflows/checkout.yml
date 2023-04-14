@@ -4,6 +4,10 @@ on: [push]
 jobs:
   Pull_from_other_Repo:
     runs-on: ubuntu-latest
+    
+    permissions:
+      id-token: read
+
     steps:
       - name: (For Test Only!) Set current datetime as env variable
         env:
